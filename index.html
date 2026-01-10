@@ -92,7 +92,6 @@ const WEBAPP_URL =
 
 let isSending = false;
 
-/* AUTO DATETIME */
 const now = new Date();
 datetime.value =
   now.toLocaleDateString("id-ID") + " " +
@@ -103,32 +102,25 @@ function sendData() {
   isSending = true;
   btnSubmit.disabled = true;
 
-  const data = {
-    nama: nama.value,
-    perusahaan: perusahaan.value,
-    pass: pass.value,
-    security: security.value,
-    datetime: datetime.value
-  };
+  const formData = new URLSearchParams();
+  formData.append("nama", nama.value);
+  formData.append("perusahaan", perusahaan.value);
+  formData.append("pass", pass.value);
+  formData.append("security", security.value);
+  formData.append("datetime", datetime.value);
 
-  /* 🔥 KIRIM KE GOOGLE SHEET (AMAN HP & LAPTOP) */
   fetch(WEBAPP_URL, {
     method: "POST",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
+    body: formData
   });
 
-  /* ✅ LANGSUNG BUKA WHATSAPP (ANTI DELAY) */
   const message =
     "REGISTRASI KELUAR%0A%0A" +
-    "Nama: " + data.nama + "%0A" +
-    "Perusahaan/Vendor: " + data.perusahaan + "%0A" +
-    "Nomor Pass: " + data.pass + "%0A" +
-    "Nama Security: " + data.security + "%0A" +
-    "Tanggal & Jam Keluar: " + data.datetime;
+    "Nama: " + nama.value + "%0A" +
+    "Perusahaan/Vendor: " + perusahaan.value + "%0A" +
+    "Nomor Pass: " + pass.value + "%0A" +
+    "Nama Security: " + security.value + "%0A" +
+    "Tanggal & Jam Keluar: " + datetime.value;
 
   window.open(
     "https://wa.me/6281314414955?text=" + message,
@@ -143,6 +135,7 @@ function sendData() {
   }, 1500);
 }
 </script>
+
 
 
 </body>
