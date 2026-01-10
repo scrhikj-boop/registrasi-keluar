@@ -157,20 +157,20 @@ button:disabled {
 <script>
 const WEBAPP_URL =
 "https://script.google.com/macros/s/AKfycbxuHt-oY9UZVT4sEVkrnj0ftGC3_Dc6-YeR0ITOtt21Zkudl7Jdxx9znFqwye0v2G53/exec";
-let submitted = false;
+
+let isSending = false;
 
 /* Auto datetime */
 document.getElementById("datetime").value =
   new Date().toLocaleDateString("id-ID") + " " +
   new Date().toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"});
 
-function sendData() {
-  if (submitted) return;
-  submitted = true;
+async function sendData() {
+  if (isSending) return;
+  isSending = true;
   btnSubmit.disabled = true;
 
   const data = {
-    form: "REGISTRASI KELUAR",
     nama: nama.value,
     perusahaan: perusahaan.value,
     pass: pass.value,
@@ -178,29 +178,42 @@ function sendData() {
     datetime: datetime.value
   };
 
-  // 🔥 KIRIM DATA (TIDAK MENUNGGU RESPONSE)
-  fetch(WEBAPP_URL, {
-    method: "POST",
-    mode: "no-cors",   // ⬅️ INI KUNCI UTAMA
-    body: JSON.stringify(data)
-  });
+  try {
+    const res = await fetch(WEBAPP_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
 
-  // ✅ LANGSUNG BUKA WHATSAPP
-  const message =
-    "REGISTRASI KELUAR%0A%0A" +
-    "Nama: " + data.nama + "%0A" +
-    "Perusahaan/Vendor: " + data.perusahaan + "%0A" +
-    "Nomor Pass: " + data.pass + "%0A" +
-    "Nama Security: " + data.security + "%0A" +
-    "Tanggal & Jam Keluar: " + data.datetime;
+    const result = await res.json();
+    if (result.status !== "success") {
+      throw new Error(result.message);
+    }
 
-  window.open(
-    "https://wa.me/6281314414955?text=" + message,
-    "_blank"
-  );
+    const message =
+      "REGISTRASI KELUAR%0A%0A" +
+      "Nama: " + data.nama + "%0A" +
+      "Perusahaan/Vendor: " + data.perusahaan + "%0A" +
+      "Nomor Pass: " + data.pass + "%0A" +
+      "Nama Security: " + data.security + "%0A" +
+      "Tanggal & Jam Keluar: " + data.datetime;
+
+    window.open(
+      "https://wa.me/6281314414955?text=" + message,
+      "_blank"
+    );
+
+    document.querySelector("form").reset();
+
+  } catch (err) {
+    alert("Gagal menyimpan data");
+    btnSubmit.disabled = false;
+    isSending = false;
+  }
 }
 </script>
-
 
 </body>
 </html>
