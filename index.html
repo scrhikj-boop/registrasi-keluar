@@ -23,9 +23,34 @@ body{
   box-shadow:0 18px 40px rgba(0,0,0,.45);
   color:#fff
 }
-.form-header,.form-footer{
-  padding:20px;text-align:center;
+.form-header{
+  padding:28px 26px 26px;
+  text-align:left;
   border-bottom:1px solid rgba(255,255,255,.12)
+}
+
+.form-header h1{
+  margin:0 0 10px;
+  font-size:26px;
+  font-weight:600;
+  letter-spacing:.5px
+}
+
+.form-header p{
+  margin:0;
+  font-size:14px;
+  font-weight:400;
+  opacity:.85;
+  line-height:1.5
+}
+.form-footer{
+  padding:20px;
+  text-align:center;
+  border-top:1px solid rgba(255,255,255,.12);
+  font-size:11px;
+  opacity:.6
+}
+
 }
 .form-footer{border-top:1px solid rgba(255,255,255,.12);font-size:11px;opacity:.6}
 .form-body{padding:22px 20px}
@@ -46,10 +71,12 @@ button{
 <body>
 
 <div class="form-card">
-  <div class="form-header">
-    <h1>REGISTRASI KELUAR</h1>
-    <p>Silakan Lengkapi Data Sebelum Keluar Area Hotel Indonesia Kempinski Jakarta</p>
-  </div>
+ <div class="form-header">
+  <h1>REGISTRASI KELUAR</h1>
+  <p>
+    Silakan Lengkapi Data Sebelum Keluar Area Hotel Indonesia Kempinski Jakarta
+  </p>
+</div>
 
   <div class="form-body">
     <form onsubmit="sendData();return false">
